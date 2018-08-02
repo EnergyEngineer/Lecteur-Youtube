@@ -13,8 +13,9 @@ class TableauControleur: UIViewController, UITableViewDelegate, UITableViewDataS
     @IBOutlet weak var tableView: UITableView!
     
     var chansons = [Chanson]() //Matrice vide
-    
     let identifiantCell = "ChansonCell"
+    let identifiantSegue = "VersVideo"
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,6 +47,19 @@ class TableauControleur: UIViewController, UITableViewDelegate, UITableViewDataS
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 120
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let chanson = chansons[indexPath.row]
+        performSegue(withIdentifier: identifiantSegue, sender: chanson)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == identifiantSegue {
+            if let nouveauController = segue.destination as? VideoController {
+                nouveauController.chanson = sender as? Chanson
+            }
+        }
+    }
 
     func ajouterChanson(){
         chansons = [Chanson]()
@@ -53,8 +67,7 @@ class TableauControleur: UIViewController, UITableViewDelegate, UITableViewDataS
         chansons.append(orelsan)
         let avicii = Chanson(artiste: "Avicii", titre: "Waiting For Love", code: "cHHLHGNpCSA")
         chansons.append(avicii)
-        let tritonal = Chanson(artiste: "Tritonal ft. Angel Taylor", titre: "Getaway", code: "Vc8m6JLGgrc")
-        chansons.append(tritonal)
+        
         
         //ReloadData recharger les données et mettre à jour la tableview si besoin
         tableView.reloadData()
