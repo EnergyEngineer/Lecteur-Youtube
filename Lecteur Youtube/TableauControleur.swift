@@ -14,6 +14,8 @@ class TableauControleur: UIViewController, UITableViewDelegate, UITableViewDataS
     
     var chansons = [Chanson]() //Matrice vide
     
+    let identifiantCell = "ChansonCell"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
@@ -26,7 +28,22 @@ class TableauControleur: UIViewController, UITableViewDelegate, UITableViewDataS
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let chanson = chansons[indexPath.row] //On récupère la chanson
+        
+        if let cell = tableView.dequeueReusableCell(withIdentifier: identifiantCell) as? ChansonCell {
+            cell.creerCell(chanson)
+            return cell
+        }
+        
+        
+        
         return UITableViewCell()
+       
+    }
+    
+    // Définition de la taille de cellules
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 170
     }
 
     func ajouterChanson(){
